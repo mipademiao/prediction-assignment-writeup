@@ -1,0 +1,70 @@
+---
+title: "Homework"
+author: "Chenye Xu"
+date: "2018???9???16???"
+output: html_document
+---
+
+```
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## how you built your model
+
+Seprate into 5 classes as A B C D E Observe the different outcomes chooseing different variables.
+
+```
+trainRaw <- read.csv("pml-training.csv")
+testRaw <- read.csv("pml-testing.csv")
+
+dim(trainRaw)
+dim(testRaw)
+sum(complete.cases(trainRaw))
+
+trainRaw <- trainRaw[, colSums(is.na(trainRaw)) == 0] 
+testRaw <- testRaw[, colSums(is.na(testRaw)) == 0]
+classe <- trainRaw$classe
+trainRemove <- grepl("^X|timestamp|window", names(trainRaw))
+trainRaw <- trainRaw[, !trainRemove]
+trainCleaned <- trainRaw[, sapply(trainRaw, is.numeric)]
+trainCleaned$classe <- classe
+testRemove <- grepl("^X|timestamp|window", names(testRaw))
+testRaw <- testRaw[, !testRemove]
+testCleaned <- testRaw[, sapply(testRaw, is.numeric)]
+set.seed(123456) 
+inTrain <- createDataPartition(trainCleaned$classe, p=0.75, list=F)
+trainData <- trainCleaned[inTrain, ]
+testData <- trainCleaned[-inTrain, ]
+controlRf <- trainControl(method="cv", 5)
+modelRf <- train(classe ~ ., data=trainData, method="rf", trControl=controlRf, ntree=250)
+modelRf
+```
+
+## how you used cross validation
+
+Clean the raw data and split it into two set for training(75%) and testing(25%).
+
+```
+inTrain <- createDataPartition(trainCleaned$classe, p=0.75, list=F)
+trainData <- trainCleaned[inTrain, ]
+testData <- trainCleaned[-inTrain, ]
+```
+
+## what you think the expected out of sample error is
+
+Corresponding to the quantity: 1-accuracy in the cross-validation data.
+
+
+
+## why you made the choices you did
+
+There are many NA in data, and the classe is a variable with no order.
+
+```
+corrPlot <- cor(trainData[, -length(names(trainData))])
+corrplot(corrPlot, method="color")
+treeModel <- rpart(classe ~ ., data=trainData, method="class")
+prp(treeModel)
+```
+
+
