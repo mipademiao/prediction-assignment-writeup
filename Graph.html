@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+<p>
+	<br />
+</p>
+<h2>
+	The graph generated
+</h2>
+<pre class="prettyprint">&gt; corrPlot &lt;- cor(trainData[, -length(names(trainData))])
+&gt; corrplot(corrPlot, method="color")</pre>
+<pre class="prettyprint">
+</pre>
+<pre class="prettyprint"><img src="https://github.com/mipademiao/prediction-assignment-writeup/blob/master/Rplot.png?raw=true" alt="" /><img src="https://github.com/mipademiao/prediction-assignment-writeup/blob/master/Rplot.png" alt="" /></pre>
+<pre class="prettyprint">
+</pre>
+<p>
+	<br />
+</p>
+<p>
+	<br />
+</p>
+<pre class="prettyprint">&gt; treeModel &lt;- rpart(classe ~ ., data=trainData, method="class")
+&gt; prp(treeModel)</pre>
+<pre class="prettyprint">
+</pre>
+<pre class="prettyprint"><img src="https://github.com/mipademiao/prediction-assignment-writeup/blob/master/Rplot01.png?raw=true" alt="" /></pre>
+<p>
+	<br />
+</p>
+</body>
+</html>
